@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Chat</title>
+</head>
+<body>
+
+    <h2>Chat with AI</h2>
+    <div id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Type a message...">
+    <button onclick="sendMessage()">Send</button>
+<button onclick="window.open('https://wa.me/yourwhatsappphonenumber', '_blank')">Chat on WhatsApp</button>
+
+    <script>
+        async function sendMessage() {
+            let userMessage = document.getElementById("user-input").value;
+            document.getElementById("chat-box").innerHTML += `<p>User: ${userMessage}</p>`;
+
+            let response = await fetch("http://127.0.0.1:5000/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage })
+            });
+
+            let data = await response.json();
+            document.getElementById("chat-box").innerHTML += `<p>Bot: ${data.reply}</p>`;
+        }
+    </script>
+
+</body>
+</html>
